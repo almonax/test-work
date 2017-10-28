@@ -11,11 +11,16 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    {{--<link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-    <link rel="stylesheet" href="{{ asset('vendor/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/angular-ui-tree.css') }}">
+    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">--}}
+    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.css">--}}
+    {{--<link rel="stylesheet" href="{{ asset('v/angular-ui-tree.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ asset('v/app.css') }}">--}}
+
 
 </head>
-<body>
+<body ng-app="EmployeesTree">
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -77,7 +82,13 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('vendor/js/app.js') }}"></script>
-    <script src="{{ asset('vendor/js/employees-app.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/employees-app.js') }}"></script>
+
+{{--    <script src="{{ asset('v/angular.min.js') }}"></script>--}}
+{{--    <script src="{{ asset('v/ui-bootstrap-tpls.js') }}"></script>--}}
+{{--    <script src="{{ asset('v/main.js') }}"></script>--}}
+{{--    <script src="{{ asset('v/basic-example.js') }}"></script>--}}
+
 </body>
 </html>

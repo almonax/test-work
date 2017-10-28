@@ -8,9 +8,14 @@
 
 try {
     window.$ = window.jQuery = require('jquery');
-
     require('bootstrap-sass');
-} catch (e) {}
+
+    window.A = window.angular = require('angular');
+    require('angular-ui-tree');
+
+} catch (e) {
+    console.error(e);
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
