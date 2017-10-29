@@ -28,7 +28,7 @@ class Employees extends EmployeesValidate
             ->where('id', '=', $id)
             ->first();
 
-        if (! $employee)  throw new \Exception('Empty set. Record with this ID not found', 204);
+        if (! $employee)  throw new \Exception('Empty set. Record with this ID not found', 404);
         return $employee;
     }
 
@@ -69,7 +69,7 @@ class Employees extends EmployeesValidate
             ->where('lvl', '<=', $employeeData->lvl + $depth)
             ->get([
                 'id', 'fullname', 'lvl', 'salary',
-                /* To simplify the view  */
+                /* To simplify the views  */
                 DB::raw('FORMAT((((rht - lft) -1) / 2),0) AS cnt_children'),
                 DB::raw('CASE WHEN rht - lft > 1 THEN 1 ELSE 0 END AS is_branch')
             ]);
@@ -166,7 +166,7 @@ class Employees extends EmployeesValidate
             ->select('*')
             ->where('id', '=', $id)
             ->first();
-        if (! $employee)  throw new \Exception('Empty set. Record with this ID not found', 204);
+//        if (! $employee)  throw new \Exception('Empty set. Record with this ID not found', 404);
         return $employee;
     }
 

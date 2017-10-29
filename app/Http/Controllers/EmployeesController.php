@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Debug\Dumper;
 use App\Employees;
-use Illuminate\View\View;
 
 class EmployeesController extends Controller
 {
@@ -28,7 +27,7 @@ class EmployeesController extends Controller
         $model = new Employees();
         $model = $model->getTree(1);
 
-        return view('dashboard', ['tree' => $model]);
+        return view('tree.tree-template', ['tree' => $model]);
 
     }
 
@@ -37,14 +36,28 @@ class EmployeesController extends Controller
         // create
     }
 
-    public function viewNode()
+    public function viewNode(Request $request)
     {
-        // read
+//        $request->route('id');
+//        $request->id;
+//        $this->dd($request->all());die;
+        $data = $this->validate($request->id, [
+           'id' => 'integer'
+        ]);
+
+        dd($data);
+//        $this->dd($request->validate([
+//            'id' => 'integer'
+//        ]));die;
+        $model = new Employees();
+        $model = $model->getEmployee($data);
+
+        return view('cruds.view', ['employee' => $model]);
     }
 
-    public function updateNode()
+    public function updateNode(Request $request)
     {
-        // update
+//        $request->validate()
     }
 
     public function deleteNode()
@@ -59,12 +72,24 @@ class EmployeesController extends Controller
 
     public function viewAll()
     {
-        //
+        $model = new Employees();
+        $model = $model->pagination;
     }
 
-    public function getBranch()
+    public function getBranch(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'id' => 'required|integer'
+        ]);
+        return $this->dd($validateData);
+    }
+
+    public function getBeginTree(Request $request)
+    {
+        $model = new Employees();
+        $model = $model->getTree(1);
+        return response()->json(['model' => $model]);
+//        return $model;
     }
 
     private function dd(...$args)

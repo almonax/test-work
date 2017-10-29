@@ -10,8 +10,8 @@ try {
     window.$ = window.jQuery = require('jquery');
     require('bootstrap-sass');
 
-    window.A = window.angular = require('angular');
-    require('angular-ui-tree');
+    // require('node_modules/jqtree/tree.jquery.js');
+    require('jqtree');
 
 } catch (e) {
     console.error(e);

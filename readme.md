@@ -16,3 +16,18 @@
     + bootstrap
     + angular-ui-tree
     + JQuery
+
+Frontend: 
+	- view tree
+	- drug & drop functional
+	- show min picture
+	- view form edit node
+Backend:
+	- CRUD functional
+	- ajax load and request
+	- search
+	- upload file (as drug and drop)
+	- при удалении переопределять босса
+	- создать структуру БД в Workbench
+	- страница с пагинацией в виде списка
+	

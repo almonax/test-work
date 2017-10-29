@@ -15,16 +15,15 @@ let mix = require('laravel-mix');
 Scripts
     jquery
     bootstrap-sass
-    angular
-    angular-ui-tree
+    jqtree
 Styles
     bootstrap
-    angular-ui-tree
+    jqtree
  */
 mix.js('resources/assets/js/app.js', 'public/assets/js')
    .sass('resources/assets/sass/app.scss', 'public/assets/css');
 
-mix.js('resources/assets/js/employees-app.js', 'public/assets/js');
-mix.styles([
-    'node_modules/angular-ui-tree/dist/angular-ui-tree.css'
-], 'public/assets/angular-ui-tree.css');
+// mix.js('resources/assets/js/employees-app.js', 'public/assets/js');
+// mix.styles([
+//     'node_modules/jqtree/jqtree.css'
+// ], 'public/assets/css/jqtree.css');

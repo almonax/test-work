@@ -12,7 +12,8 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/angular-ui-tree.css') }}">
+    <link rel="stylesheet" href="{{ asset('tree/jqtree.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/css/angular-ui-tree.css') }}">--}}
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">--}}
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.css">--}}
     {{--<link rel="stylesheet" href="{{ asset('v/angular-ui-tree.css') }}">--}}
@@ -20,7 +21,7 @@
 
 
 </head>
-<body ng-app="EmployeesTree">
+<body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -43,8 +44,16 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        <li><a @if (Request::is('/transfer')){{ 'class="active"' }}@endif href="{{ url('/transfer') }}">Employees transfer</a></li>
                     </ul>
+
+                    <!-- Search -->
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
@@ -83,12 +92,14 @@
 
     <!-- Scripts -->
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    <script src="{{ asset('assets/js/employees-app.js') }}"></script>
+    {{--<script src="{{ asset('tree/tree.jquery.js') }}"></script>--}}
+
+    {{--<script src="{{ asset('assets/js/initTree.js') }}"></script>--}}
 
 {{--    <script src="{{ asset('v/angular.min.js') }}"></script>--}}
 {{--    <script src="{{ asset('v/ui-bootstrap-tpls.js') }}"></script>--}}
 {{--    <script src="{{ asset('v/main.js') }}"></script>--}}
-{{--    <script src="{{ asset('v/basic-example.js') }}"></script>--}}
+    {{--<script src="{{ asset('assets/js/basic.js') }}"></script>--}}
 
 </body>
 </html>

@@ -12,20 +12,24 @@
 */
 
 //Route::get('/', function () {
-//    return view('welcome');
+//    return views('welcome');
 //});
 
-Route::get('/', 'EmployeesController@index')->name('dashboard');
-
+//Route::get('/', 'EmployeesController@index')->name('dashboard');
+Route::get('/', function() {
+    $employees = App\Employees::paginate(20);
+    return view('dashboard', ['employees' => $employees]);
+});
 Auth::routes();
 
-//Route::get('/dashboard', 'EmployeesController@index')->name('dashboard');
+Route::post('/get-begin-tree', 'EmployeesController@getBeginTree');
 
 // CRUD
 # Create
 Route::post('/employees/create', 'EmployeesController@addNode');
-# Read (view)
-Route::get('/employees/view/{id}', 'EmployeesController@viewNode');
+# Read (views)
+Route::get('views/{id}', 'EmployeesController@viewNode');
+
 Route::get('/employees/all', 'EmployeesController@viewAll'); // + pagination
 # Update
 Route::put('/employees/update', 'EmployeesController@updateNode');
@@ -37,5 +41,7 @@ Route::post('/employees/get-branch', 'EmployeesController@getBranch');
 
 // Upload file
 Route::post('/employees/upload', 'EmployeesController@upload');
+
+Route::get('/transfer', 'EmployeesController@transfer');
 
 Route::get('/test', 'TestController@run');
