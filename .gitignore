@@ -3,10 +3,13 @@
 /app/Console
 /app/Exceptions
 /app/Http/Auth
-/app/Http/Middleware
 /app/Providers
 /app/Http/Kernel.php
 /app/Http/Controllers/Auth
+/app/Http/Middleware/EncryptCookies.php
+/app/Http/Middleware/TrimStrings.php
+/app/Http/Middleware/TrustProxies.php
+/app/Http/Middleware/VerifyCsrfToken.php
 
 /database/factories
 /database/seeds/DatabaseSeeder.php

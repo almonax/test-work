@@ -16,10 +16,19 @@
 //});
 
 //Route::get('/', 'EmployeesController@index')->name('dashboard');
-Route::get('/', function() {
-    $employees = App\Employees::paginate(20);
-    return view('dashboard', ['employees' => $employees]);
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/', function() {
+        $employees = App\Employees::paginate(20);
+        return view('dashboard', ['employees' => $employees]);
+    });
+
+    // CRUD
+    # Read (views)
+    Route::get('/views/{id}', 'EmployeesController@viewNode')->where('id', '[0-9]+');
 });
+
+
 Auth::routes();
 
 Route::post('/get-begin-tree', 'EmployeesController@getBeginTree');
@@ -27,8 +36,7 @@ Route::post('/get-begin-tree', 'EmployeesController@getBeginTree');
 // CRUD
 # Create
 Route::post('/employees/create', 'EmployeesController@addNode');
-# Read (views)
-Route::get('views/{id}', 'EmployeesController@viewNode');
+
 
 Route::get('/employees/all', 'EmployeesController@viewAll'); // + pagination
 # Update
