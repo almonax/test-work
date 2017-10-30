@@ -2,16 +2,6 @@
 
 @section('content')
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -20,7 +10,9 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <div class="image"><img src="https://dummyimage.com/mediumrectangle/222222/eeeeee" alt=""></div>
+                <div class="text-center">
+                    <img src="http://via.placeholder.com/250x250" class="img-circle" alt="Cinque Terre">
+                </div>
             </div>
             <div class="col-md-8">
                 <div class="panel panel-default">
@@ -40,7 +32,10 @@
                                 <td>{{ $employee->beg_work }}</td>
                             </tr>
                         </table>
-                        <a href="{{ url('/') }}" class="btn btn-info">Back</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-info">Come back</a>
+                        <a class="btn btn-warning" href="{{ url('/edit', ['id' => $employee->id]) }}">Edit profile</a>
+                        <a class="btn btn-danger" href="{{ url('/create', ['parentId' => $employee->id]) }}">Add a subordinate</a>
+                        <a class="btn btn-danger _actionBtn" data-action="delete" data-val="{{ $employee->id }}" href="#">Delete</a>
                     </div>
                 </div>
             </div>

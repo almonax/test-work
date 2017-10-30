@@ -100,6 +100,7 @@ class Employees extends EmployeesValidate
                     'lft' => DB::raw('CASE WHEN `lft` > ' . $employeeData->lft . ' THEN `lft` - ' . $deltaKeys . ' ELSE `lft` END'),
                     'rht' => DB::raw('CASE WHEN `rht` > ' . $employeeData->lft . ' THEN `rht` - ' . $deltaKeys . ' ELSE `rht` END'),
                 ]);
+            return true;
         });
     }
 
@@ -115,13 +116,11 @@ class Employees extends EmployeesValidate
 
         return DB::transaction(function() use($data, $maxRightKey) {
             $model = new Employees($data);
-//            $model->fullname = $data->fullname;
             $model->lft = $maxRightKey + 1;
             $model->rht = $maxRightKey + 2;
             $model->lvl = 0;
-//            $model->salary = $data->salary;
-//            $model->beg_work = $data->beg_work;
             $model->save();
+            return $model->id;
         });
     }
 
@@ -129,7 +128,7 @@ class Employees extends EmployeesValidate
      * Add new node in tree
      *
      * @param   int $parentId
-     * @param   object $data
+     * @param   array $data
      * @return  mixed
      */
     public function addNode($parentId, $data)
@@ -149,7 +148,7 @@ class Employees extends EmployeesValidate
             $model->rht = $parentData->rht + 1;
             $model->lvl = $parentData->lvl + 1;
             $model->save();
-
+            return $model->id;
         });
     }
 

@@ -32,7 +32,7 @@ class EmployeesSeeder extends Seeder
      * Of all hierarchy levels
      * @var int
      */
-    public $totalLevel = 4;
+    public $totalLevel = 3;
 
     /**
      * Level from which to start building a tree

@@ -4,9 +4,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Add new employee</h1>
+                <h1>Edit employee profile</h1>
 
-                @include('cruds._form-create');
+                @include('cruds._form-edit');
 
             </div>
         </div>

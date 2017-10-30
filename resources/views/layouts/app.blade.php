@@ -101,5 +101,6 @@
 {{--    <script src="{{ asset('v/main.js') }}"></script>--}}
     {{--<script src="{{ asset('assets/js/basic.js') }}"></script>--}}
 
+    <script src="/custom.js"></script>
 </body>
 </html>

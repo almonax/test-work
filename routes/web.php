@@ -23,13 +23,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     // CRUD
     # Read (views)
-    Route::get('/views/{id}', 'EmployeesController@viewNode')->where('id', '[0-9]+');
+    Route::get('/view/{id}', 'EmployeesController@viewNode')->where('id', '[0-9]+')->name('view');
 
     # Create
-    Route::get('/create', function() {
-        return view('cruds.create');
-    });
-    Route::post('/create', 'EmployeesController@addNode')->name('create');
+    Route::get('/create/{id?}', 'EmployeesController@create');
+    Route::post('/create', 'EmployeesController@addNode');
 
     # Update
     Route::get('/edit/{id}', function($id) {
@@ -39,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/edit', 'EmployeesController@');
 
     # Delete
-//    Route::delete();
+    Route::DELETE('/delete', 'EmployeesController@delete');
     # Search
 });
 
@@ -66,4 +64,14 @@ Route::post('/employees/upload', 'EmployeesController@upload');
 Route::get('/transfer', 'EmployeesController@transfer');
 
 Route::get('/test', 'TestController@run');
+
+ *
+ *
+ * function($id = null) {
+$parentData = App\Employees::find($id)->get(['id', 'fullname']);
+if ($id && preg_match('[0-9]+', $id))
+$parentData = App\Employees::find($id)->get(['id', 'fullname']);
+if (! $parentData) abort(404, 'Records with this id not found');
+
+return view('cruds.create', ['parent' => ]);
  */
