@@ -11,13 +11,11 @@
 |
 */
 
-//Route::get('/', function () {
-//    return views('welcome');
-//});
+Auth::routes();
 
-//Route::get('/', 'EmployeesController@index')->name('dashboard');
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'auth'], function () {
+    // Main page
     Route::get('/', function() {
         $employees = App\Employees::paginate(20);
         return view('dashboard', ['employees' => $employees]);
@@ -26,11 +24,26 @@ Route::group(['middleware' => 'auth:api'], function () {
     // CRUD
     # Read (views)
     Route::get('/views/{id}', 'EmployeesController@viewNode')->where('id', '[0-9]+');
+
+    # Create
+    Route::get('/create', function() {
+        return view('cruds.create');
+    });
+    Route::post('/create', 'EmployeesController@addNode')->name('create');
+
+    # Update
+    Route::get('/edit/{id}', function($id) {
+        $employee = App\Employees::find($id);
+        dd($employee);
+    })->where('id', '[0-9]+');
+    Route::put('/edit', 'EmployeesController@');
+
+    # Delete
+//    Route::delete();
+    # Search
 });
 
-
-Auth::routes();
-
+/**
 Route::post('/get-begin-tree', 'EmployeesController@getBeginTree');
 
 // CRUD
@@ -53,3 +66,4 @@ Route::post('/employees/upload', 'EmployeesController@upload');
 Route::get('/transfer', 'EmployeesController@transfer');
 
 Route::get('/test', 'TestController@run');
+ */
