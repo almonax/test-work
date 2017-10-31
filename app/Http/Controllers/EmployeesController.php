@@ -112,7 +112,7 @@ class EmployeesController extends Controller
     {
         $model = new Employees();
 
-        $this->validate($request, $model->getRules([
+        $request->validate($model->getRules([
             'id', 'fullname', 'salary', 'beg_work'
         ]));
 
@@ -149,10 +149,30 @@ class EmployeesController extends Controller
      */
 
 
-
-    public function search()
+    /**
+     * @param   $query
+     * @return  \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function search($query)
     {
-        
+        $model = new Employees();
+        $columns = ['id', 'fullname'];
+        $valid = $model->validateId($query);
+        if ($valid) {
+            $model = Employees::where('id', '=', $query)
+                ->get($columns);
+        } else {
+            $valid = $model->validate($query, ['fullname']);
+            if ($valid) {
+                $model = Employees::where('fullname', 'LIKE', "%{$query}%")
+                    ->get($columns)
+                    ->pagination(20);
+            } else
+                $model = null;
+        }
+
+        return view('cruds.search', ['model' => $model]);
+
     }
 
 

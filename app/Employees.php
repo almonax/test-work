@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -78,15 +79,17 @@ class Employees extends EmployeesValidate
     }
 
 
+    /**
+     * @param   Request $request
+     */
     public function updateNode($request)
     {
-        DB::transaction(function() use($request) {
-
-            return Employees::update($request->all);
-
+        return DB::transaction(function() use($request) {
+            return Employees::find($request->id)
+                ->update(
+                    $request->all($this->getFillable())
+                );
         });
-
-
     }
 
     /**

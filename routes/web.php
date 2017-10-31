@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
     # Delete
     Route::delete('/delete', 'EmployeesController@delete');
     # Search
+    Route::get('/search/{query}', 'EmployeesController@search')->name('search');
 });
 
 /**

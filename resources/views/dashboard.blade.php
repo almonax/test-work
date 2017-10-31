@@ -8,7 +8,6 @@
 
             <h1>All employees of company</h1>
             <a href="{{ url('/create') }}" class="btn btn-default">Add new</a>
-            <a href=""></a>
             <table class="table table-striped">
                 <thead>
                     <th>Full name</th>

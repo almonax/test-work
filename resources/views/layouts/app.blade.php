@@ -12,7 +12,9 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <link rel="stylesheet" href="{{ asset('tree/jqtree.css') }}">
+
     {{--<link rel="stylesheet" href="{{ asset('assets/css/angular-ui-tree.css') }}">--}}
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">--}}
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.css">--}}
@@ -49,15 +51,7 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                            <!-- Search -->
-                            <li>
-                                <form class="navbar-form navbar-left" role="search">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Search by id or name">
-                                    </div>
-                                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-                                </form>
-                            </li>
+                            @include('cruds.search-form');
                             <li><a @if (Request::is('/transfer')){{ 'class="active"' }}@endif href="{{ url('/transfer') }}">Employees transfer</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
