@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Debug\Dumper;
 use App\Employees;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeesController extends Controller
 {
@@ -28,11 +29,6 @@ class EmployeesController extends Controller
         return view('dashboard', ['employees' => $model]);
     }
 
-//    public function addNode(Request $request)
-//    {
-//
-//    }
-
     /**
      * View single record of employee
      *
@@ -41,12 +37,133 @@ class EmployeesController extends Controller
      */
     public function viewNode($id)
     {
+        $model = new Employees();
+        $valid =   $model->validateId($id);
+
+        if (! $valid)
+            return abort(404);
+
         $model = Employees::find($id);
 
-        if (! $model) return abort(404, 'Record with this ID not found');
+        if (! $model)
+            return abort(404);
 
         return view('cruds.view', ['employee' => $model]);
     }
+
+    /**
+     * @param   int|null $id - parent node id
+     * @return  \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create($id = null)
+    {
+        $parent = null;
+        $model = new Employees();
+
+        if (! empty($id)) {
+            $valid = $model->validateId($id);
+
+            if (! $valid) abort(404);
+            $parent = Employees::find($id, ['id', 'fullname']);
+        }
+
+        return view('cruds.create', ['parentData' => $parent]);
+    }
+
+    /**
+     * @param   Request $request
+     * @return  \Illuminate\Http\RedirectResponse
+     */
+    public function addNode(Request $request)
+    {
+        $model = new Employees();
+        $this->validate($request, $model->getRules());
+
+        if ($request->parentId)
+            $model = $model->addNode($request->parentId, $request->all());
+        else $model = $model->addRootNode($request->all());
+        return redirect()->route('view', ['id' => $model]);
+    }
+
+    /**
+     * @param   $id
+     * @return  \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        $model = new Employees();
+        $valid = $model->validateId($id);
+
+        if (! $valid)
+            abort(404);
+
+        $model = Employees::find($id);
+        if (! $model)
+            return abort(404);
+
+        return view('cruds.edit', ['employee' => $model]);
+    }
+
+    /**
+     * @param   Request $request
+     * @return  $this|\Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request)
+    {
+        $model = new Employees();
+
+        $this->validate($request, $model->getRules([
+            'id', 'fullname', 'salary', 'beg_work'
+        ]));
+
+        if ($model->updateNode($request))
+            return redirect()->route('view', ['id' => $request->id]);
+
+        return back()->withInput($request->all());
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request)
+    {
+        $model = new Employees();
+        $this->validate($request, $model->getRules(['id']));
+
+        $model = $model->deleteNode($request->id);
+
+        if ($model === true) $model = url('/');
+
+        return response()->json(['model' => $model]);
+    }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+
+
+
+    public function search()
+    {
+        
+    }
+
+
+
+
+//    public function addNode(Request $request)
+//    {
+//
+//    }
+
+
 
 
     public function moveNode()
@@ -57,7 +174,7 @@ class EmployeesController extends Controller
     public function getBranch(Request $request)
     {
         $validateData = $request->validate([
-            'id' => 'required|integer'
+            'id' => 'integer'
         ]);
         return $this->dd($validateData);
     }
@@ -70,55 +187,7 @@ class EmployeesController extends Controller
 //        return $model;
     }
 
-    public function addNode(Request $request)
-    {
-        $this->validate($request, [
-            'fullname' => 'required|string|max:40',
-            'salary' => 'string|nullable|max:11',
-            'beg_work' => 'date|nullable',
-            'parentId' => 'integer|nullable'
-        ]);
 
-        $model = new Employees();
-        if ($request->parentId)
-            $model = $model->addNode($request->parentId, $request->all());
-        else $model = $model->addRootNode($request->all());
-        return redirect()->route('view', ['id' => $model]);
-    }
-
-    public function create($id = null)
-    {
-        $parent = null;
-        if ($id && is_int( (int) $id )) {
-            $parent = Employees::find($id, ['id', 'fullname']);
-            if (! $parent) abort(404, 'Record with this ID not found');
-        }
-
-        return view('cruds.create', ['parentData' => $parent]);
-    }
-
-    public function edit()
-    {
-
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete(Request $request)
-    {
-        $this->validate($request, [
-           'id' => 'required|integer'
-        ]);
-
-        $model = new Employees();
-        $model = $model->deleteNode($request->id);
-
-        if ($model === true) $model = url('/');
-
-        return response()->json(['model' => $model]);
-    }
 
     private function dd(...$args)
     {

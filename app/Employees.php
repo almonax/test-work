@@ -68,13 +68,25 @@ class Employees extends EmployeesValidate
             ->where('lft', '<', $employeeData->rht)
             ->where('lvl', '<=', $employeeData->lvl + $depth)
             ->get([
-                'id', 'fullname', 'lvl', 'salary',
+                'id', 'fullname', 'lvl', 'salary', 'beg_work',
                 /* To simplify the views  */
                 DB::raw('FORMAT((((rht - lft) -1) / 2),0) AS cnt_children'),
                 DB::raw('CASE WHEN rht - lft > 1 THEN 1 ELSE 0 END AS is_branch')
             ]);
 
         return $branch;
+    }
+
+
+    public function updateNode($request)
+    {
+        DB::transaction(function() use($request) {
+
+            return Employees::update($request->all);
+
+        });
+
+
     }
 
     /**
@@ -161,6 +173,8 @@ class Employees extends EmployeesValidate
      */
     public function getEmployee($id)
     {
+        //maybe use this:
+        // return Employee::find($id)
         $employee = DB::table($this->table)
             ->select('*')
             ->where('id', '=', $id)

@@ -23,21 +23,18 @@ Route::group(['middleware' => 'auth'], function () {
 
     // CRUD
     # Read (views)
-    Route::get('/view/{id}', 'EmployeesController@viewNode')->where('id', '[0-9]+')->name('view');
+    Route::get('/view/{id}', 'EmployeesController@viewNode')->name('view');
 
     # Create
     Route::get('/create/{id?}', 'EmployeesController@create');
     Route::post('/create', 'EmployeesController@addNode');
 
     # Update
-    Route::get('/edit/{id}', function($id) {
-        $employee = App\Employees::find($id);
-        dd($employee);
-    })->where('id', '[0-9]+');
-    Route::put('/edit', 'EmployeesController@');
+    Route::get('/edit/{id}', 'EmployeesController@edit');
+    Route::put('/edit', 'EmployeesController@update');
 
     # Delete
-    Route::DELETE('/delete', 'EmployeesController@delete');
+    Route::delete('/delete', 'EmployeesController@delete');
     # Search
 });
 
@@ -74,4 +71,10 @@ $parentData = App\Employees::find($id)->get(['id', 'fullname']);
 if (! $parentData) abort(404, 'Records with this id not found');
 
 return view('cruds.create', ['parent' => ]);
+ *
+ * ============
+function($id) {
+$employee = App\Employees::find($id);
+return view('cruds.edit', ['employee' => $employee]);
+}
  */

@@ -37,7 +37,7 @@
     <h3>Service information</h3>
 
     <div class="form-group">
-        <label class="control-label col-sm-2" for="ID">Employee ID:</label>
+        <label class="control-label col-sm-2" for="ID">Parent ID:</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" id="ID" value="{{ $employee->id }}" disabled>
         </div>
