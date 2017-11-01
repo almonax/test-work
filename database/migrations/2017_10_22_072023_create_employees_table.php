@@ -18,14 +18,17 @@ class CreateEmployeesTable extends Migration
             $table->engine = 'InnoDB';
             # basic columns
             $table->increments('id');
-            $table->string('fullname', 50);
+            $table->string('fullname', 40);
             # for build tree
             $table->integer('lft');
             $table->integer('rht');
             $table->mediumInteger('lvl', false, true);
             # other data
             $table->decimal('salary', 11, 2)->nullable();
+            $table->string('photo', 40)->nullable();
             $table->date('beg_work')->nullable();
+            # add index
+            $table->index(['lft', 'rht'], 'indexKeys');
         });
     }
 

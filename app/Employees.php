@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class Employees extends EmployeesValidate
 {
@@ -13,7 +12,7 @@ class Employees extends EmployeesValidate
 
     protected $table = 'employees';
 
-    protected $fillable = ['fullname', 'salary', 'beg_work'];
+    protected $fillable = ['fullname', 'salary', 'beg_work', 'photo'];
 
     /**
      * Get keys of single employee
@@ -65,11 +64,11 @@ class Employees extends EmployeesValidate
     {
         $employeeData = $this->getKeysNode($id);
 
-        $branch = Employees::where('lft', '>=', $employeeData->lft)
+        $branch = DB::table($this->table)->where('lft', '>=', $employeeData->lft)
             ->where('lft', '<', $employeeData->rht)
             ->where('lvl', '<=', $employeeData->lvl + $depth)
             ->get([
-                'id', 'fullname', 'lvl', 'salary', 'beg_work',
+                'id', 'fullname', 'lvl', 'salary', 'beg_work', 'photo',
                 /* To simplify the views  */
                 DB::raw('FORMAT((((rht - lft) -1) / 2),0) AS cnt_children'),
                 DB::raw('CASE WHEN rht - lft > 1 THEN 1 ELSE 0 END AS is_branch')
@@ -78,6 +77,27 @@ class Employees extends EmployeesValidate
         return $branch;
     }
 
+    /**
+     * @param   integer $id
+     * @param   array $columns
+     * @return  mixed
+     */
+    public function searchById($id, $columns)
+    {
+        return Employees::where('id', '=', $id)
+            ->get($columns);
+    }
+
+    /**
+     * @param   string $name
+     * @param   array $columns
+     * @return  mixed
+     */
+    public function searchByName($name, $columns)
+    {
+        return Employees::where('fullname', 'LIKE', "%{$name}%")
+            ->get($columns);
+    }
 
     /**
      * @param   Request $request

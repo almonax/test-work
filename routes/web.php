@@ -36,46 +36,9 @@ Route::group(['middleware' => 'auth'], function () {
     # Delete
     Route::delete('/delete', 'EmployeesController@delete');
     # Search
-    Route::get('/search/{query}', 'EmployeesController@search')->name('search');
+    Route::get('/search', 'EmployeesController@search')->name('search');
+
+    # Images
+//    Route::get('resizeImage', 'ImageController@resizeImage');
+//    Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
 });
-
-/**
-Route::post('/get-begin-tree', 'EmployeesController@getBeginTree');
-
-// CRUD
-# Create
-Route::post('/employees/create', 'EmployeesController@addNode');
-
-
-Route::get('/employees/all', 'EmployeesController@viewAll'); // + pagination
-# Update
-Route::put('/employees/update', 'EmployeesController@updateNode');
-# Delete
-Route::delete('/employees/delete', 'EmployeesController@deleteNode');
-
-// Lazy load
-Route::post('/employees/get-branch', 'EmployeesController@getBranch');
-
-// Upload file
-Route::post('/employees/upload', 'EmployeesController@upload');
-
-Route::get('/transfer', 'EmployeesController@transfer');
-
-Route::get('/test', 'TestController@run');
-
- *
- *
- * function($id = null) {
-$parentData = App\Employees::find($id)->get(['id', 'fullname']);
-if ($id && preg_match('[0-9]+', $id))
-$parentData = App\Employees::find($id)->get(['id', 'fullname']);
-if (! $parentData) abort(404, 'Records with this id not found');
-
-return view('cruds.create', ['parent' => ]);
- *
- * ============
-function($id) {
-$employee = App\Employees::find($id);
-return view('cruds.edit', ['employee' => $employee]);
-}
- */

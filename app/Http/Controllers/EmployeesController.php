@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Debug\Dumper;
 use App\Employees;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
 
 class EmployeesController extends Controller
 {
@@ -43,12 +41,12 @@ class EmployeesController extends Controller
         if (! $valid)
             return abort(404);
 
-        $model = Employees::find($id);
+        $model = $model->getBranch($id);
 
         if (! $model)
             return abort(404);
 
-        return view('cruds.view', ['employee' => $model]);
+        return view('cruds.view', ['employee' => array_first($model), 'model' => $model]);
     }
 
     /**
@@ -79,9 +77,17 @@ class EmployeesController extends Controller
         $model = new Employees();
         $this->validate($request, $model->getRules());
 
+        $requestArray = $request->all();
+
+        if ($request->file('photo')) {
+            $img = new ImageController();
+            $img = $img->resizeImage($request);
+            $requestArray['photo'] = $img;
+        }
+
         if ($request->parentId)
-            $model = $model->addNode($request->parentId, $request->all());
-        else $model = $model->addRootNode($request->all());
+            $model = $model->addNode($request->parentId, $requestArray);
+        else $model = $model->addRootNode($requestArray);
         return redirect()->route('view', ['id' => $model]);
     }
 
@@ -116,6 +122,13 @@ class EmployeesController extends Controller
             'id', 'fullname', 'salary', 'beg_work'
         ]));
 
+        if ($request->file('photo')) {
+            $img = new ImageController();
+            $img = $img->resizeImage($request);
+            $request->offsetUnset('photo');
+            $request->request->add(['photo' => $img]);
+        }
+
         if ($model->updateNode($request))
             return redirect()->route('view', ['id' => $request->id]);
 
@@ -139,41 +152,41 @@ class EmployeesController extends Controller
     }
 
     /**
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     */
-
-
-    /**
-     * @param   $query
+     * @param   Request $request
      * @return  \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function search($query)
+    public function search(Request $request)
     {
         $model = new Employees();
+        $query = $request->input('query');
         $columns = ['id', 'fullname'];
+
         $valid = $model->validateId($query);
         if ($valid) {
-            $model = Employees::where('id', '=', $query)
-                ->get($columns);
+
+            $model = $model->searchById($query, $columns);
+
         } else {
-            $valid = $model->validate($query, ['fullname']);
+
+            $valid = $model->validate(['fullname' => $query], ['fullname']);
             if ($valid) {
-                $model = Employees::where('fullname', 'LIKE', "%{$query}%")
-                    ->get($columns)
-                    ->pagination(20);
+                $model = $model->searchByName($query, $columns);
             } else
                 $model = null;
         }
 
         return view('cruds.search', ['model' => $model]);
-
     }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
 
 
 

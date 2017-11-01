@@ -8,21 +8,25 @@
 
                 <h1>Search</h1>
                 <a href="{{ url('/') }}" class="btn btn-default">Back to home</a>
+                <hr>
 
-                @if ($model === null)
+                @if (count($model) == 0)
 
                     <h2>Sorry, but nothing found for this query =(</h2>
-                    <hr>
-                    Search again
-                    @include('cruds.search-form);
+                    <p>Search again</p>
+                    <div class="row">
+                        @include('cruds.search-form')
+                    </div>
 
                 @else
 
                     @foreach($model as $item)
-                        <div class="well-lg"><a href="{{ route('view', ['id' => $item->id])  }}">{{ $item->fullname }}</a></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="well well-sm"><a href="{{ route('view', ['id' => $item->id])  }}">{{ $item->fullname }}</a></div>
+                            </div>
+                        </div>
                     @endforeach
-
-                    {{ $model->links() }}
 
                 @endif
 

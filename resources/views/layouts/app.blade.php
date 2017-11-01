@@ -51,7 +51,11 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                            @include('cruds.search-form');
+                            <!-- Search -->
+                            <li>
+                                @include('cruds.search-form');
+                            </li>
+                            <li><a href="{{ url('/create') }}">New employee</a></li>
                             <li><a @if (Request::is('/transfer')){{ 'class="active"' }}@endif href="{{ url('/transfer') }}">Employees transfer</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
