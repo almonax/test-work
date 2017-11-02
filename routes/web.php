@@ -38,7 +38,19 @@ Route::group(['middleware' => 'auth'], function () {
     # Search
     Route::get('/search', 'EmployeesController@search')->name('search');
 
+    # EmployeesTransfer
+    Route::get('/transfer', function() {
+        return view('tree.tree-template');
+    });
+    Route::post('/get-first', function() {
+        $m = new App\Employees();
+        $m = $m->getTree(1);
+       return response()->json($m);
+    });
+    Route::post('/move-node', 'EmployeesController@moveNode');
+
     # Images
+
 //    Route::get('resizeImage', 'ImageController@resizeImage');
 //    Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
 });

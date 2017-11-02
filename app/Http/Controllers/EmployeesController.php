@@ -198,9 +198,10 @@ class EmployeesController extends Controller
 
 
 
-    public function moveNode()
+    public function moveNode(Request $request)
     {
-        // move nodes
+//        $model = new Employees()
+        return response()->json(['hello' => 'world']);
     }
 
     public function getBranch(Request $request)

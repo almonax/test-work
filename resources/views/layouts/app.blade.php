@@ -89,7 +89,7 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
     {{--<script src="{{ asset('tree/tree.jquery.js') }}"></script>--}}
 
-    {{--<script src="{{ asset('assets/js/initTree.js') }}"></script>--}}
+    <script src="{{ asset('assets/js/initTree.js') }}"></script>
 
 {{--    <script src="{{ asset('v/angular.min.js') }}"></script>--}}
 {{--    <script src="{{ asset('v/ui-bootstrap-tpls.js') }}"></script>--}}
