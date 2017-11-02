@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Employees;
 use Illuminate\Http\Request;
 use Illuminate\Support\Debug\Dumper;
-use App\Employees;
 
 class EmployeesController extends Controller
 {
@@ -125,14 +125,13 @@ class EmployeesController extends Controller
         if ($request->file('photo')) {
             $img = new ImageController();
             $img = $img->resizeImage($request);
-            $request->offsetUnset('photo');
-            $request->request->add(['photo' => $img]);
+            $request->request->add(['_photo' => $img]);
         }
 
         if ($model->updateNode($request))
-            return redirect()->route('view', ['id' => $request->id]);
+            return redirect()->route('view', ['id' => $request['id']]);
 
-        return back()->withInput($request->all());
+        return back()->withInput($request);
     }
 
     /**

@@ -70,9 +70,7 @@ class ImageController extends Controller
             throw new Exception('Can`t create directory', 500);
 
         $img = $Image->make($image->getRealPath());
-        $img->resize($this->width, $this->height, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($thumbPath . $imageName);
+        $img->fit($this->width, $this->height)->save($thumbPath . $imageName);
 
         $image->move($uploadPath, $imageName);
 

@@ -101,14 +101,18 @@ class Employees extends EmployeesValidate
 
     /**
      * @param   Request $request
+     * @return  mixed
      */
     public function updateNode($request)
     {
-        return DB::transaction(function() use($request) {
-            return Employees::find($request->id)
-                ->update(
-                    $request->all($this->getFillable())
-                );
+        $id = $request->id;
+        $reqArr = $request->all($this->getFillable());
+        if (isset($reqArr['photo']))
+            $reqArr['photo'] = $request['_photo'];
+
+        return DB::transaction(function() use($reqArr, $id) {
+            return Employees::find($id)
+                ->update($reqArr);
         });
     }
 

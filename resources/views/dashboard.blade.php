@@ -19,7 +19,7 @@
                             <div class="row">
                                 <div class="col-md-3 text-center">
                                     <img width="100px"
-                                         src="{{ ($employee->photo == null) ? 'http://via.placeholder.com/100x100': '/images/thumb/'.$employee->photo}})"
+                                         src="{{ ($employee->photo == null) ? 'http://via.placeholder.com/100x100': '/images/thumbs/'.$employee->photo }}"
                                          class="img-thumbnail" alt="{{ $employee->fullname }}">
                                 </div>
                                 <div class="col-md-7">
