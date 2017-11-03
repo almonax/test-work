@@ -46,9 +46,12 @@
     <div class="form-group">
         <div class="col-sm-2 text-right"><strong>Current photo:</strong></div>
         <div class="col-sm-10">
-            <img width="100px"
-                 src="{{ ($employee->photo == null) ? 'http://via.placeholder.com/100x100': '/images/uploads/'.$employee->photo}}"
-                 class="img-thumbnail" alt="{{ $employee->fullname }}">
+            @if ($employee->photo == null)
+                <img width="100px" src="http://via.placeholder.com/100x100" class="img-thumbnail" alt="No photo">
+            @else
+                <img width="100px" src="/images/uploads/{{ $employee->photo }}" class="img-thumbnail" alt="{{ $employee->fullname }}">
+                <a id="_deletePhoto" class="btn btn-danger" href="#" title="Delete photo"><span class="glyphicon glyphicon-remove"></span></a>
+            @endif
         </div>
     </div>
 
@@ -63,7 +66,8 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success">Save</button>
+            <a href="{{ route('view', ['id' => $employee->id]) }}" class="btn btn-default">&laquo; Preview</a>
+            <button type="submit" class="btn btn-success pull-right">Save</button>
         </div>
     </div>
 

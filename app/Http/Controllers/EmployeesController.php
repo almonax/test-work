@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employees;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Debug\Dumper;
 
@@ -175,6 +176,20 @@ class EmployeesController extends Controller
         }
 
         return view('cruds.search', ['model' => $model]);
+    }
+
+    /**
+     * @param   Request $request
+     * @return  \Illuminate\Http\JsonResponse
+     */
+    public function deleteEmployeePhoto(Request $request)
+    {
+        $model = Employees::find($request->id);
+        $file = new ImageController();
+        $file->deletePhoto($model->photo);
+        $model->photo = null;
+        $model->save();
+        return response()->json(true);
     }
 
     /**

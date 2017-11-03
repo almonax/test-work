@@ -49,7 +49,9 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::post('/move-node', 'EmployeesController@moveNode');
 
-    # Images
+    // Images
+    # Ajax delete
+    Route::post('/employee_delPhoto', 'EmployeesController@deleteEmployeePhoto');
 
 //    Route::get('resizeImage', 'ImageController@resizeImage');
 //    Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);

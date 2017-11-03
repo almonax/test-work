@@ -61,8 +61,14 @@ class ImageController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $uploadPath = $this->generPath($this->pathOrigin);
-        $thumbPath = $this->generPath($this->pathResize);
+        $uploadPath = $this->generPath([
+            $this->pathOrigin,
+            $this->subPath
+        ]) . '/';
+        $thumbPath = $this->generPath([
+            $this->pathResize,
+            $this->subPath
+        ]) . '/';
         $image = $request->file('photo');
         $imageName = time() .'.'. $image->getClientOriginalExtension();
 
@@ -78,17 +84,41 @@ class ImageController extends Controller
     }
 
     /**
-     * @param   string $folder
+     * @param   string $path
+     */
+    public function deletePhoto($path)
+    {
+        $FileSys = new Filesystem();
+
+        $toUploads = $this->generPath([
+            $this->pathOrigin,
+            $path
+        ]);
+        $toThumbs = $this->generPath([
+            $this->pathResize,
+            $path
+        ]);
+
+        if (file_exists($toUploads))
+            $FileSys->delete($toUploads);
+        if (file_exists($toThumbs))
+            $FileSys->delete($toThumbs);
+    }
+
+    /**
+     * @param   array $paths
      * @return  string
      */
-    private function generPath($folder)
+    private function generPath($paths)
     {
-        return public_path($this->defaultPath
-            . DIRECTORY_SEPARATOR
-            . $folder
-            . DIRECTORY_SEPARATOR
-            . $this->subPath
-            . DIRECTORY_SEPARATOR);
+        $fullPath = $this->defaultPath . DIRECTORY_SEPARATOR;
+        foreach ($paths as $path) {
+            if ($path != last($paths))
+                $fullPath .= $path . DIRECTORY_SEPARATOR;
+            else
+                $fullPath .= $path;
+        }
+        return public_path($fullPath);
     }
 
     /**
@@ -101,7 +131,7 @@ class ImageController extends Controller
             return true;
         } else {
             $Filesys = new Filesystem();
-            return$Filesys->makeDirectory($path, 0755, true);
+            return $Filesys->makeDirectory($path, 0744, true);
         }
     }
 
