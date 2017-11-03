@@ -20,19 +20,19 @@ class EmployeesSeeder extends Seeder
      * People in submission at the lowest level
      * @var int
      */
-    public $workClass = 3;
+    public $workClass = 6;
 
     /**
      * Nodes at each level
      * @var int
      */
-    public $nodesOnLevel = 3;
+    public $nodesOnLevel = 6;
 
     /**
      * Of all hierarchy levels
      * @var int
      */
-    public $totalLevel = 3;
+    public $totalLevel = 6;
 
     /**
      * Level from which to start building a tree

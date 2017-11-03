@@ -117,6 +117,32 @@ class Employees extends EmployeesValidate
     }
 
     /**
+     * @param   int $id
+     */
+    public function getParentNode($id)
+    {
+        /*
+        SELECT a.id
+          FROM employees a, employees b
+         WHERE b.id = p_id
+    AND a.id <> p_id
+    AND b.lft BETWEEN a.lft AND a.rht
+    ;
+        */
+    }
+
+    /**
+     * @param   int $id
+     */
+    public function deleteBranch($id)
+    {
+        // move child nodes/branches to new parent
+        //...
+        // delete node
+
+    }
+
+    /**
      * Delete node in tree
      *
      * @param   int $id
