@@ -261,7 +261,7 @@ class Employees extends EmployeesValidate
 
         // Compute advanced data
         $levelDiff = $nodeData->lvl - $newParentData->lvl - 1;
-        $keySize = $nodeData->rht - $nodeData->lft;
+        $keySize = $nodeData->rht - $nodeData->lft + 1;
 
         DB::beginTransaction();
 
@@ -286,9 +286,9 @@ class Employees extends EmployeesValidate
                 ]);
 
             # Increase left and/or right position values of future 'lower' items (and parents)
-            $keyDiff = ($newParentData->rht > $nodeData->rht) ?
-                $newParentData->rht - $keySize :
-                $newParentData->rht;
+            $keyDiff = ($newParentData->rht > $nodeData->rht)
+                ? $newParentData->rht - $keySize
+                : $newParentData->rht;
 
             Employees::where('lft', '>=', $keyDiff)
                 ->update([
@@ -300,11 +300,9 @@ class Employees extends EmployeesValidate
                 ]);
 
             # Move node (ant it's subnodes) and update it's parent item lvl
-            $keyDiff = ($newParentData->rht > $nodeData->rht) ?
-                $newParentData->rht - $nodeData->rht - 1 :
-                $newParentData->rht - $nodeData->rht - 1 + $keySize;
-
-//            DB::rollback();
+            $keyDiff = ($newParentData->rht > $nodeData->rht)
+                ? $newParentData->rht - $nodeData->rht - 1
+                : $newParentData->rht - $nodeData->rht - 1 + $keySize;
 
             Employees::where('lft', '<=', 0 - $nodeData->lft)
                 ->where('rht', '>=', 0 - $nodeData->rht)
@@ -315,12 +313,9 @@ class Employees extends EmployeesValidate
                 ]);
         } catch (\Exception $e) {
 
-
             DB::rollback();
-
             return $e;
-//            return Redirect::to('/')
-//                ->withErrors($e->getErrors());
+
         }
 
         DB::commit();
@@ -331,13 +326,17 @@ class Employees extends EmployeesValidate
     /**
      * Move branch to new root of the tree
      *
-     * @param $id
+     * @param   $id
+     * @return  bool|\Exception
      */
-    public function moveToRoot($id)
+    public function moveNodeToRoot($id)
     {
         $nodeData = $this->getKeysNode($id);
-        $keySize = $nodeData->rht - $nodeData->lft;
+        $keySize = $nodeData->rht - $nodeData->lft + 1;
 
+        DB::beginTransaction();
+
+        try {
         # Update the moving node by placing it in a new space
         Employees::where('lft', '>=', $nodeData->lft)
             ->where('rht', '<=', $nodeData->rht)
@@ -369,7 +368,7 @@ class Employees extends EmployeesValidate
         $maxKey = Employees::max('rht');
         /**
          * for use in production need improve formula that calc $lvlDiff,
-         * because holes are formed
+         * because holes are created
          */
         $lvlDiff = $nodeData->lvl;
 
@@ -380,6 +379,18 @@ class Employees extends EmployeesValidate
                 'rht' => DB::raw('0 - (`rht`) + ' . $maxKey),
                 'lvl' => DB::raw('(`lvl`) - ' . $lvlDiff)
             ]);
+
+        } catch (\Exception $e) {
+
+
+            DB::rollback();
+
+            return $e;
+        }
+
+        DB::commit();
+        return true;
+
     }
 
 }

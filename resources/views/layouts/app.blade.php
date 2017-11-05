@@ -86,15 +86,11 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('assets/js/app.js') }}"></script>
-    {{--<script src="{{ asset('tree/tree.jquery.js') }}"></script>--}}
 
+    <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/initTree.js') }}"></script>
 
-{{--    <script src="{{ asset('v/angular.min.js') }}"></script>--}}
-{{--    <script src="{{ asset('v/ui-bootstrap-tpls.js') }}"></script>--}}
-{{--    <script src="{{ asset('v/main.js') }}"></script>--}}
-    {{--<script src="{{ asset('assets/js/basic.js') }}"></script>--}}
+    @stack('init_tree')
 
     <script src="/custom.js"></script>
 </body>
