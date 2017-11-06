@@ -51,6 +51,8 @@ class ImageController extends Controller
     }
 
     /**
+     * Resize image on init params
+     *
      * @param   Request $request
      * @return  string
      */
@@ -84,6 +86,8 @@ class ImageController extends Controller
     }
 
     /**
+     * Delete photo (re-size and original version) from folders
+     *
      * @param   string $path
      */
     public function deletePhoto($path)
@@ -106,6 +110,8 @@ class ImageController extends Controller
     }
 
     /**
+     * Helpers function. Generated path to download folders
+     *
      * @param   array $paths
      * @return  string
      */
@@ -122,6 +128,9 @@ class ImageController extends Controller
     }
 
     /**
+     * Helpers function. Checked path on existed directories
+     * if dir not found - created it.
+     *
      * @param   string $path
      * @return  bool
      */

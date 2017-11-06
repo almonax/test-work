@@ -1,4 +1,5 @@
 # Test work
+[Install guide](./install.md)
 
 ## Info
 - Model: Nested sets.
@@ -49,7 +50,7 @@ To calculate the approximate number of inserts, there is a formula
 8. ~~Move functionality implemented in tasks 4, 5 and 6 (including ajax endpoints) to login/password restricted area.~~
 9. ~~In the login/password restricted area implement the rest of CRUD functionality for employee record. Please note that all employee fields should be editable including possibility to change employee’s boss.~~ (Go to /edit/{id} or /transfer)
 10. ~~Implement possibility to upload employee photo and display it on the employee edit page and add additional column with small resized employee photo to the employee list page.~~ (See ImageController and EmployeesController which uses the first)
-11. ~~Implement logic to re-assign employee’s subordinates to employee’s boss in case if employee is being deleted (additional bonus points if you implement it using Laravel / Symfony ORM features).~~ (see Employees::deleteNode())
-12. Implement lazy loading for employee tree, i.e. by default show first 2 levels of hierarchy and load tree branch (full or 2 more levels of hierarchy) by clicking on the employee from the 2nd level.
-13. Implement possibility to change employee’s boss using drag-n-drop directly in the employee tree.
+11. ~~Implement logic to re-assign employee’s subordinates to employee’s boss in case if employee is being deleted~~ (additional bonus points if you implement it using Laravel / Symfony ORM features). (see Employees::deleteNode())
+12. ~~Implement lazy loading for employee tree, i.e. by default show first 2 levels of hierarchy and load tree branch (full or 2 more levels of hierarchy) by clicking on the employee from the 2nd level.~~ (See domain.loc/transfer && EmployeesController::moveNode())
+13. ~~Implement possibility to change employee’s boss using drag-n-drop directly in the employee tree.~~
 14. ~~Create database structure first using MySQL Workbench (do not forget to commit MySQL Workbench project file to git) and generate migration files for Laravel / Symfony from existing MySQL database or directly from MySQL Workbench project file.~~ (See /workbench_project)

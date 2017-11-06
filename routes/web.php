@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
     # Delete
     // Delete node or branch
     Route::delete('/delete', 'EmployeesController@delete');
+
+    # Search
     // Search by `id` or `fullname`
     Route::get('/search', 'EmployeesController@search')->name('search');
 

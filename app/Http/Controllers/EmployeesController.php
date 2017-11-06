@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employees;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Debug\Dumper;
 
 class EmployeesController extends Controller
 {
@@ -51,6 +49,8 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Action of show form create new node
+     *
      * @param   int|null $id - parent node id
      * @return  \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -70,6 +70,8 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Create (insert) new node in branch or in root of the tree
+     *
      * @param   Request $request
      * @return  \Illuminate\Http\RedirectResponse
      */
@@ -93,6 +95,8 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Show form to edit
+     *
      * @param   $id
      * @return  \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -112,6 +116,8 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Action update fields node
+     *
      * @param   Request $request
      * @return  $this|\Illuminate\Http\RedirectResponse
      */
@@ -136,18 +142,51 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Delete node or branch, or save descendant node, but not deleted node
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request)
     {
-
-
-        // get branch subordinate
+        // declare main params
+        $delNodeId = $request->id;
+        $Imager = new ImageController();
         $model = new Employees();
+
         $this->validate($request, $model->getRules(['id']));
 
-        $model = $model->deleteNode($request->id);
+        // declare advanced params
+        $parent = last($model->getParentNode($delNodeId, ['id'])->toArray());
+
+        if ($parent === false) {
+            $this->deleteEmployeePhoto($request);
+            $model->deleteNode($request->id);
+            return response()->json(['model' => url('/')]);
+        }
+
+        $branches = $model->getBranch($delNodeId);
+        $delNodePhoto = null;
+
+        // move child-nodes to new parent
+        foreach ($branches as $key => $branch) {
+            if ($key === 0) {
+                $delNodePhoto = $branch->photo;
+                continue;
+            }
+
+            if ($model->moveNode($branch->id, $parent->id))
+                continue;
+            else
+                break;
+        }
+
+        // del photo
+        if ($delNodePhoto != null) {
+            $Imager->deletePhoto($delNodePhoto);
+        }
+        // del node
+        $model = $model->deleteNode($delNodeId);
 
         if ($model === true) $model = url('/');
 
@@ -155,6 +194,8 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Simple search interface
+     *
      * @param   Request $request
      * @return  \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -182,6 +223,8 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Delete employee photo. Clear folder and DB
+     *
      * @param   Request $request
      * @return  \Illuminate\Http\JsonResponse
      */
@@ -196,26 +239,11 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Move node or branch to new ancestor
      *
-     *
-     *
-     *
-     *
-     *
-     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
-
-
-
-
-//    public function addNode(Request $request)
-//    {
-//
-//    }
-
-
-
-
     public function moveNode(Request $request)
     {
         $moveArray = $request->toMovie;
@@ -247,6 +275,8 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Getting branch
+     *
      * @param   Request $request
      * @return  Employees|array|\Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
@@ -277,12 +307,11 @@ class EmployeesController extends Controller
     }
 
     /**
+     * Action for get first two level tree in 'Transfer Employees'
      *
-     *
-     * @param   Request $request
-     * @return  \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function getBeginTree(Request $request)
+    public function getBeginTree()
     {
         $model = new Employees();
         $model = $model->getTree(1);

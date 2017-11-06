@@ -22,8 +22,3 @@ Styles
  */
 mix.js('resources/assets/js/app.js', 'public/assets/js')
    .sass('resources/assets/sass/app.scss', 'public/assets/css');
-
-// mix.js('resources/assets/js/employees-app.js', 'public/assets/js');
-// mix.styles([
-//     'node_modules/jqtree/jqtree.css'
-// ], 'public/assets/css/jqtree.css');

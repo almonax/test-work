@@ -25,6 +25,8 @@ class EmployeesValidate extends Model
     private $errors;
 
     /**
+     * Custom validate method
+     *
      * @param   array $data
      * @param   array $rules
      * @return  bool
@@ -54,6 +56,8 @@ class EmployeesValidate extends Model
     }
 
     /**
+     * Converted array-rules with property $this->rules
+     *
      * @param   array $key
      * @return  array
      */
@@ -75,6 +79,8 @@ class EmployeesValidate extends Model
     }
 
     /**
+     * Validate once id
+     *
      * @param   int|string $id
      * @return  bool
      */

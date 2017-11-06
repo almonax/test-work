@@ -12,15 +12,6 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-    <link rel="stylesheet" href="{{ asset('tree/jqtree.css') }}">
-
-    {{--<link rel="stylesheet" href="{{ asset('assets/css/angular-ui-tree.css') }}">--}}
-    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">--}}
-    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.css">--}}
-    {{--<link rel="stylesheet" href="{{ asset('v/angular-ui-tree.css') }}">--}}
-    {{--<link rel="stylesheet" href="{{ asset('v/app.css') }}">--}}
-
 
 </head>
 <body>
@@ -53,7 +44,7 @@
                         @else
                             <!-- Search -->
                             <li>
-                                @include('cruds.search-form');
+                                @include('cruds.search-form')
                             </li>
                             <li><a href="{{ url('/create') }}">New employee</a></li>
                             <li><a @if (Request::is('/transfer')){{ 'class="active"' }}@endif href="{{ url('/transfer') }}">Employees transfer</a></li>
@@ -88,10 +79,9 @@
     <!-- Scripts -->
 
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    <script src="{{ asset('assets/js/initTree.js') }}"></script>
 
     @stack('init_tree')
 
-    <script src="/custom.js"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
 </body>
 </html>

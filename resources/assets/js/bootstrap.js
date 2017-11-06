@@ -10,9 +10,10 @@ try {
     window.$ = window.jQuery = require('jquery');
     require('jquery-ui/ui/widgets/datepicker.js');
 
+    // bootstrap
     require('bootstrap-sass');
 
-    // require('node_modules/jqtree/tree.jquery.js');
+    // JQTree
     require('jqtree');
 
 } catch (e) {

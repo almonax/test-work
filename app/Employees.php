@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use MongoDB\Driver\Query;
 
 class Employees extends EmployeesValidate
 {
@@ -78,6 +79,8 @@ class Employees extends EmployeesValidate
     }
 
     /**
+     * Search employees by ID
+     *
      * @param   integer $id
      * @param   array $columns
      * @return  mixed
@@ -89,6 +92,8 @@ class Employees extends EmployeesValidate
     }
 
     /**
+     * Search employees by fullname field
+     *
      * @param   string $name
      * @param   array $columns
      * @return  mixed
@@ -100,6 +105,8 @@ class Employees extends EmployeesValidate
     }
 
     /**
+     * Update fields value by employee
+     *
      * @param   Request $request
      * @return  mixed
      */
@@ -117,29 +124,21 @@ class Employees extends EmployeesValidate
     }
 
     /**
+     * Get parent (ancestor) node of node that have current id
+     *
      * @param   int $id
+     * @return  mixed
+     * @throws  \Exception|mixed
      */
     public function getParentNode($id)
     {
-        /*
-        SELECT a.id
-          FROM employees a, employees b
-         WHERE b.id = p_id
-    AND a.id <> p_id
-    AND b.lft BETWEEN a.lft AND a.rht
-    ;
-        */
-    }
+        $model = DB::table($this->table . ' as a')
+            ->join($this->table . ' as b', 'b.id', '=', DB::raw($id))
+            ->where('a.id', '<>', $id)
+            ->where('b.lft', 'BETWEEN', DB::raw('a.lft AND a.rht'))
+            ->get(['a.id']);
 
-    /**
-     * @param   int $id
-     */
-    public function deleteBranch($id)
-    {
-        // move child nodes/branches to new parent
-        //...
-        // delete node
-
+        return $model;
     }
 
     /**
@@ -226,13 +225,10 @@ class Employees extends EmployeesValidate
      */
     public function getEmployee($id)
     {
-        //maybe use this:
-        // return Employee::find($id)
         $employee = DB::table($this->table)
             ->select('*')
             ->where('id', '=', $id)
             ->first();
-//        if (! $employee)  throw new \Exception('Empty set. Record with this ID not found', 404);
         return $employee;
     }
 
@@ -367,8 +363,10 @@ class Employees extends EmployeesValidate
         # Update hidden branch
         $maxKey = Employees::max('rht');
         /**
+         * ---------------------------------------------------------------
          * for use in production need improve formula that calc $lvlDiff,
          * because holes are created
+         * ---------------------------------------------------------------
          */
         $lvlDiff = $nodeData->lvl;
 

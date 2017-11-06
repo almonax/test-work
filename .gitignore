@@ -3,7 +3,6 @@
 /app/Console
 /app/Exceptions
 /app/Http/Auth
-/app/Providers
 /app/Http/Kernel.php
 /app/Http/Controllers/Auth
 /app/Http/Middleware/EncryptCookies.php
@@ -18,7 +17,6 @@
 /routes/channels.php
 /routes/console.php
 
-/public
 /public/hot
 /public/storage
 
@@ -33,7 +31,6 @@
 /config
 /.idea
 /.vagrant
-/tests
 
 Homestead.json
 Homestead.yaml
