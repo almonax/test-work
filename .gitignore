@@ -24,7 +24,6 @@
 /storage
 
 /resources/lang
-/resources/views/auth
 
 /bootstrap
 /vendor
